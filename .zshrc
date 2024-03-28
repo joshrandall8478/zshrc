@@ -1,27 +1,28 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.cargo/bin:$PATH
+export XDG_DATA_DIRS=~/.local/share/applications:$XDG_DATA_DIRS
+#export WAYLAND_DISPLAY=wayland-1
+export BROWSER=mercury-browser
 
-#export PATH="$(python3 -m site --user-base)/bin:$PATH"
-#export CM_IGNORE_WINDOW="keepassxc"
+#Disable or enable xwayland glamor
+#export XWAYALAND_NO_GLAMOR=1
+
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-export XDG_CONFIG_HOME="$HOME/.config"
-
-#if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-#   startx
-#fi
+ZSH=/usr/share/oh-my-zsh/
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="bira"
+#source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+ZSH_THEME=(bira)
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -77,12 +78,10 @@ ZSH_THEME="bira"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-
+plugins=(git sudo zsh-256color zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -102,36 +101,79 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#neofetch | lolcat --seed=100
-#neofetch | lolcat -a --speed=700 --seed=70
-pfetch
-fortune -s
-#fortune -s | glitchcat -a 100 -g 100 -s 10 -d 500 -f 600
-alias open="nautilus"
-alias updategrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-alias snapshot="sudo timeshift --create"
-alias backup="echo use snapshot"
-alias fucking=sudo
-alias pip=pip3
-alias python=python3
-alias ins="sudo pacman -S"
-alias unins="sudo pacman -R"
-alias sys-upgrade="sudo pacman -Syu"
-alias yeet-orphans="sudo pacman -Qtdq | sudo pacman -Rns -"
-export PATH=$PATH:/home/josharch/.spicetify
-alias bspwm-reload="~/.config/bspwm/bspwmrc"
-alias start="~/start.sh"
-alias start-sddm="~/start-sddm.sh"
-alias take-my-data="kstart5 google-chrome-stable"
-alias set-output="pactl set-default-sink"
-alias set-input="pactl set-default-source"
-alias code-wayland="code --enable-features=UseOzonePlatform --ozone-platform=wayland"
-alias vscw="code --enable-features=UseOzonePlatform --ozone-platform=wayland"
+#function command_not_found_handler {
+#    local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
+#    printf 'zsh: command not found: %s\n' "$1"
+#    local entries=( ${(f)"$(/usr/bin/pacman -F --machinereadable -- "/usr/bin/$1")"} )
+#    if (( ${#entries[@]} )) ; then
+#        printf "${bright}$1${reset} may be found in the following packages:\n"
+#        local pkg
+#        for entry in "${entries[@]}" ; do
+#            local fields=( ${(0)entry} )
+#            if [[ "$pkg" != "${fields[2]}" ]] ; then
+#               printf "${purple}%s/${bright}%s ${green}%s${reset}\n" "${fields[1]}" "${fields[2]}" "${fields[3]}"
+#           fi
+#           printf '    /%s\n' "${fields[4]}"
+#           pkg="${fields[2]}"
+#       done
+#   fi
+#   return 127
+#}
 
-alias output-speaker="pactl set-default-sink alsa_output.pci-0000_09_00.3.analog-stereo"
-alias output-headphones="pactl set-default-sink alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00.analog-game"
+alias in="yay -S"
+
+
+#function in {
+#    local pkg="$1"
+#    if pacman -Si "$pkg" &>/dev/null ; then
+#        sudo pacman -S "$pkg"
+#    elif pacman -Qi yay &>/dev/null ; then
+#        yay -S "$pkg"
+#    elif pacman -Qi paru &>/dev/null ; then
+#        paru -S "$pkg"
+#    fi
+#}
+
+
+alias ls='eza --icons' # list
+
+alias un='yay -R' # uninstall package
+alias up='yay -Syu' # update system/package/aur
+alias pl='pacman -Qs' # list installed package
+alias pa='pacman -Ss' # list availabe package
+alias pc='sudo pacman -Sc' # remove unused cache
+alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
+alias vc='code' # gui code editor
+alias fucking='sudo' # because its funny
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+#Display Pokemon
+#pokemon-colorscripts --no-title -r
+
+#Display random gifs
+#kitten icat --align left $(find $HOME/.config/neofetch/gifs/ -name "*.gif" | sort -R | head -1)
+
+
+#Display specs
+#if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+#	pfetch
+#else
+#        neofetch
+#fi
+
+#if [[ "$TERM" == "xterm-kitty" ]] && [ ! -n "$SSH_TTY" ]; then
+#	neofetch
+#else
+#	pfetch
+#fi
+
+
+pfetch
