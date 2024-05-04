@@ -141,12 +141,12 @@ alias in="yay -S"
 
 
 alias ls='eza --icons' # list
-
+alias cd='z' # cd = zoxide
 alias un='yay -R' # uninstall package
 alias up='yay -Syu' # update system/package/aur
-alias pl='pacman -Qs' # list installed package
-alias pa='pacman -Ss' # list availabe package
-alias pc='sudo pacman -Sc' # remove unused cache
+alias pl='yay -Qs' # list installed package
+alias pa='yay -Ss' # list availabe package
+alias pc='sudo yay -Sc' # remove unused cache
 alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
 alias vc='code' # gui code editor
 alias fucking='sudo' # because its funny
@@ -175,5 +175,6 @@ alias fucking='sudo' # because its funny
 #	pfetch
 #fi
 
+eval "$(zoxide init zsh)"
 
 pfetch
